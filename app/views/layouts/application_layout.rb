@@ -13,7 +13,7 @@ class ApplicationLayout < ApplicationView
         csp_meta_tag
         csrf_meta_tags
         stylesheet_link_tag "application", data_turbo_track: "reload"
-        javascript_importmap_tags
+        javascript_include_tag "application", data_turbo_track: "reload", type: "module"
       end
 
       body do

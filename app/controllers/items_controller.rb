@@ -8,8 +8,23 @@ class ItemsController < ApplicationController
   end
 
   def show
-    render Items::ShowView.new(
+    render Items::Show.new(
       item: Item.find(params[:id])
     )
+  end
+
+  def edit
+    render Items::Edit.new(
+      item: Item.find(params[:id])
+    )
+  end
+
+  def create
+  end
+
+  def update
+  end
+
+  def destroy
   end
 end

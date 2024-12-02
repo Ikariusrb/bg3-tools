@@ -4,6 +4,7 @@ class Items::ItemView < Phlex::HTML
   include Phlex::Rails::Helpers::DOMID
   include Phlex::Rails::Helpers::LinkTo
   include Phlex::Rails::Helpers::Routes
+  register_value_helper :heroicon
 
   attr_reader :item
 
@@ -27,23 +28,16 @@ class Items::ItemView < Phlex::HTML
           plain item.uuid
         end
         td(class: "border-b border-slate-400 p-2 font-medium") do
-          whitespace
           link_to(item) do
-            whitespace
             span(class: "svg-image") do
-              whitespace
-              plain heroicon("eye", variant: :mini)
-              whitespace
+              heroicon("eye", variant: :mini)
             end
             whitespace
           end
           whitespace
           link_to(edit_item_path(item)) do
-            whitespace
             span(class: "svg-image") do
-              whitespace
-              plain heroicon("pencil", variant: :mini)
-              whitespace
+              heroicon("pencil", variant: :mini)
             end
             whitespace
           end
@@ -55,11 +49,8 @@ class Items::ItemView < Phlex::HTML
               turbo_confirm: "Are you certain you want to delete this?"
             }
           ) do
-            whitespace
             span(class: "svg-image") do
-              whitespace
-              plain heroicon("trash", variant: :mini)
-              whitespace
+              heroicon("trash", variant: :mini)
             end
             whitespace
           end
@@ -70,7 +61,7 @@ class Items::ItemView < Phlex::HTML
 
   private
 
-  def heroicon(*args, **kwargs)
-    # TODO: Implement me
-  end
+  # def heroicon(*args, **kwargs)
+  #   # TODO: Implement me
+  # end
 end

@@ -1,6 +1,6 @@
 # /home/rbecker/code/bg3-tools/app/views/items/show.rb
 
-class Items::Show < Phlex::HTML
+class View::Items::Show < Phlex::HTML
   attr_reader :item
 
   def initialize(item:)

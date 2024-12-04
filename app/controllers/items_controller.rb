@@ -1,4 +1,4 @@
-class ItemsController < ApplicationController
+class ItemsController < ResourceController
     layout -> { ApplicationLayout }
 
   def index
@@ -8,15 +8,17 @@ class ItemsController < ApplicationController
   end
 
   def show
-    render Items::Show.new(
+    render View::Items::Show.new(
       item: Item.find(params[:id])
     )
   end
 
+  def new
+    render View::Items::Edit.new(item: Item.new)
+  end
+
   def edit
-    render Items::Edit.new(
-      item: Item.find(params[:id])
-    )
+    render View::Items::Edit.new(item: Item.find(params[:id]))
   end
 
   def create
@@ -27,5 +29,11 @@ class ItemsController < ApplicationController
   end
 
   def destroy
+  end
+
+  private
+
+  def item_params
+    params.require(:item).permit(:name, :description, :uuid)
   end
 end

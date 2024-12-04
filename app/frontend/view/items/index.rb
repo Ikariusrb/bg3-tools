@@ -34,7 +34,7 @@ class View::Items::Index < ApplicationView
               whitespace
               @items.each do |item|
                 whitespace
-                render Items::ItemView.new(item: item)
+                render View::Items::Row.new(item: item)
                 whitespace
               end
             end

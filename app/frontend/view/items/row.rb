@@ -1,6 +1,6 @@
 
 
-class Items::ItemView < Phlex::HTML
+class View::Items::Row < Phlex::HTML
   include Phlex::Rails::Helpers::DOMID
   include Phlex::Rails::Helpers::LinkTo
   include Phlex::Rails::Helpers::Routes
@@ -58,10 +58,4 @@ class Items::ItemView < Phlex::HTML
       end
     end
   end
-
-  private
-
-  # def heroicon(*args, **kwargs)
-  #   # TODO: Implement me
-  # end
 end

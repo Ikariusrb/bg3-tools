@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Items::IndexView < ApplicationView
+class View::Items::Index < ApplicationView
   include Phlex::Rails::Helpers::LinkTo
   include Phlex::Rails::Helpers::Routes
 

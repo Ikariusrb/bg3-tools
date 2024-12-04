@@ -2,7 +2,7 @@ class ItemsController < ApplicationController
     layout -> { ApplicationLayout }
 
   def index
-    render Items::IndexView.new(
+    render View::Items::Index.new(
       items: Item.all.load_async
     )
   end
@@ -23,6 +23,7 @@ class ItemsController < ApplicationController
   end
 
   def update
+    binding.pry
   end
 
   def destroy

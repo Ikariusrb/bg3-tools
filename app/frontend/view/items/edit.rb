@@ -1,4 +1,4 @@
-class Items::Edit < Phlex::HTML
+class View::Items::Edit < Phlex::HTML
   include Phlex::Rails::Helpers::FormFor
   include Phlex::Rails::Helpers::LinkTo
 

@@ -14,7 +14,7 @@ class ItemsController < ResourceController
   end
 
   def new
-    render View::Items::Edit.new(item: Item.new)
+    render View::Items::Edit.new(item: Item.new, notice: notice)
   end
 
   def edit
@@ -25,7 +25,9 @@ class ItemsController < ResourceController
   end
 
   def update
-    binding.pry
+    item = Item.find_by!(id: params[:id])
+    item.update!(item_params)
+    redirect_to item_url(item), notice: "Item was successfully updated."
   end
 
   def destroy

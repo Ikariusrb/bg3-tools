@@ -28,6 +28,7 @@ class ApplicationLayout < ApplicationView
           nav.item(items_path) { "Items" }
           nav.item("/foo") { "Builds" }
         end
+        p { yield :message }
         main do
           yield
         end

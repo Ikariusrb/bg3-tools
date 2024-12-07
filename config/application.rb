@@ -20,6 +20,10 @@ Bundler.require(*Rails.groups)
 
 module Bg3Tools
   class Application < Rails::Application
+    config.autoload_paths << "#{root}/app/views"
+    config.autoload_paths << "#{root}/app/views/layouts"
+    config.autoload_paths << "#{root}/app/views/components"
+    config.autoload_paths << "#{root}/app/frontend"
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.0
 

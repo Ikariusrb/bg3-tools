@@ -6,7 +6,7 @@ class View::Items::Index < ApplicationView
 
   attr_reader :items, :notice
 
-  def initialize(items:, notice: nil)
+  def initialize(items, notice: nil)
     @items = items
     @notice = notice
   end
@@ -44,26 +44,10 @@ class View::Items::Index < ApplicationView
     end
 
     div(class: "flex flex-row basis-11/12") do
-        #   div(
-        #     data_controller: "rest-action",
-        #     data_rest_multi_url: auto_tags_action_path,
-        #     data_rest_action_target: "container",
-        #     class: "flex"
-        #   ) do
-        #     whitespace
-        link_to "New",
-                new_item_path,
-                class:
-                  "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-      #     whitespace
-      #     button(
-      #       data_action: " click->rest-action#multiAction",
-      #       data_rest_action_action_param: "apply_all",
-      #       class:
-      #         "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-      #     ) { "Apply All" }
-      #     plain " Apply All "
-      #   end
+      link_to "New",
+              new_item_path,
+              class:
+                "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
     end
   end
 end

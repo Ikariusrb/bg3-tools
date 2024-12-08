@@ -5,19 +5,13 @@ class View::Items::Edit < Phlex::HTML
 
   attr_reader :item, :action, :notice
 
-  def initialize(item:, action:, notice: nil)
+  def initialize(item, action:, notice: nil)
     @item = item
     @action = action
     @notice = notice
   end
 
   def view_template
-    # if item.persisted?
-    #   extra_args = {}
-    # else
-    #   extra_args = {}
-    #   binding.pry
-    # end
     form_for(item) do |f|
       div do
         f.label :name

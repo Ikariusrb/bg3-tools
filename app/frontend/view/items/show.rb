@@ -7,7 +7,7 @@ class View::Items::Show < Phlex::HTML
 
   attr_reader :item, :notice
 
-  def initialize(item:, notice: nil)
+  def initialize(item, notice: nil)
     @item = item
     @notice = notice
   end

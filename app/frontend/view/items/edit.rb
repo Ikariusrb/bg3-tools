@@ -1,15 +1,24 @@
 class View::Items::Edit < Phlex::HTML
   include Phlex::Rails::Helpers::FormFor
   include Phlex::Rails::Helpers::LinkTo
+  include Phlex::Rails::Helpers::Routes
 
-  attr_reader :item
+  attr_reader :item, :action, :notice
 
-  def initialize(item:)
+  def initialize(item:, action:, notice: nil)
     @item = item
+    @action = action
+    @notice = notice
   end
 
-  def template
-    form_for item do |f|
+  def view_template
+    # if item.persisted?
+    #   extra_args = {}
+    # else
+    #   extra_args = {}
+    #   binding.pry
+    # end
+    form_for(item) do |f|
       div do
         f.label :name
         f.text_field :name
@@ -27,7 +36,11 @@ class View::Items::Edit < Phlex::HTML
 
       div do
         f.submit("Save", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline")
-        link_to("Cancel", :back)
+        if action == :new
+          link_to("Cancel", items_path)
+        else
+          link_to("Cancel", item)
+        end
       end
     end
   end

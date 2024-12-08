@@ -4,7 +4,7 @@ class View::Items::Index < ApplicationView
   include Phlex::Rails::Helpers::LinkTo
   include Phlex::Rails::Helpers::Routes
 
-  attr_reader :notice
+  attr_reader :items, :notice
 
   def initialize(items:, notice: nil)
     @items = items
@@ -32,7 +32,7 @@ class View::Items::Index < ApplicationView
             end
             tbody(class: "bg-white dark:bg-slate-800") do
               whitespace
-              @items.each do |item|
+              items.each do |item|
                 whitespace
                 render View::Items::Row.new(item: item)
                 whitespace
@@ -43,27 +43,27 @@ class View::Items::Index < ApplicationView
       end
     end
 
-    # div(class: "flex flex-row basis-11/12") do
-    #   div(
-    #     data_controller: "rest-action",
-    #     data_rest_multi_url: auto_tags_action_path,
-    #     data_rest_action_target: "container",
-    #     class: "flex"
-    #   ) do
-    #     whitespace
-    #     link_to "New",
-    #             new_item_path,
-    #             class:
-    #               "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-    #     whitespace
-    #     button(
-    #       data_action: " click->rest-action#multiAction",
-    #       data_rest_action_action_param: "apply_all",
-    #       class:
-    #         "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-    #     ) { "Apply All" }
-    #     plain " Apply All "
-    #   end
-    # end
+    div(class: "flex flex-row basis-11/12") do
+        #   div(
+        #     data_controller: "rest-action",
+        #     data_rest_multi_url: auto_tags_action_path,
+        #     data_rest_action_target: "container",
+        #     class: "flex"
+        #   ) do
+        #     whitespace
+        link_to "New",
+                new_item_path,
+                class:
+                  "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+      #     whitespace
+      #     button(
+      #       data_action: " click->rest-action#multiAction",
+      #       data_rest_action_action_param: "apply_all",
+      #       class:
+      #         "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+      #     ) { "Apply All" }
+      #     plain " Apply All "
+      #   end
+    end
   end
 end

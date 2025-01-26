@@ -4,7 +4,7 @@
 
 replicaCount: 1
 appName: bg3-tools
-environment: development
+environment: production
 
 image:
   repository: registry.jrbhome.net/bg3-tools
@@ -16,6 +16,12 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+env:
+  RAILS_ENV: "production"
+  RAILS_LOG_TO_STDOUT: "true"
+  RAILS_SERVE_STATIC_FILES: "true"
+env_secrets:
+- RAILS_MASTER_KEY
 serviceAccount:
   # Specifies whether a service account should be created
   create: true

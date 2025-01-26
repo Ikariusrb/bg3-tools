@@ -36,6 +36,15 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Values.version }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            {{- range $name, $value := .Values.env }}
+            - name: {{ $name }}
+              value: {{ $value | quote }}
+            {{- end }}
+            {{- range $secret := .Values.env_secrets }}
+            - name: {{ $secret }}
+              value: "12345"
+            {{- end }}
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}

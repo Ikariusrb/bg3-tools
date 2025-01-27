@@ -17,11 +17,13 @@ nameOverride: ""
 fullnameOverride: ""
 
 env:
-  RAILS_ENV: "production"
+  RAILS_ENV: production
   RAILS_LOG_TO_STDOUT: "true"
   RAILS_SERVE_STATIC_FILES: "true"
-env_secrets:
-- RAILS_MASTER_KEY
+env_secrets: []
+# - name: env var name
+#   secret: secret name
+#   secretKey: key for secret data
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
@@ -38,46 +40,40 @@ podLabels: {}
 
 podSecurityContext: {} # fsGroup: 2000
 
-securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
+securityContext:
+  capabilities:
+    drop:
+    - ALL
   # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
+  runAsNonRoot: true
+  runAsUser: 1000
 
 service:
   type: ClusterIP
-  port: 80
+  port: 3000
 
 ingress:
-  enabled: false
-  className: ""
+  enabled: true
+  className: nginx
   annotations:
     cert-manager.io/cluster-issuer: ca-issuer
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
   hosts:
-  - host: chart-example.local
+  - host: bg3-tools.prd.jrbhome.net
     paths:
     - path: /
       pathType: ImplementationSpecific
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
+  tls:
+  - secretName: bg3-tools-production-tls
+    hosts:
+    - bg3-tools.prd.jrbhome.net
 
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+resources:
+  limits:
+    cpu: 1
+    memory: 1Gi
+  requests:
+    cpu: 100m
+    memory: 128Mi
 
 livenessProbe:
   httpGet:
@@ -96,17 +92,22 @@ autoscaling:
   # targetMemoryUtilizationPercentage: 80
 
   # Additional volumes on the output Deployment definition.
-volumes: []
+volumes:
+- name: rails-storage
+  persistentVolumeClaim:
+    claimName: bg3-tools-production-pvc
 # - name: foo
 #   secret:
 #     secretName: mysecret
 #     optional: false
 
 # Additional volumeMounts on the output Deployment definition.
-volumeMounts: []
-# - name: foo
-#   mountPath: "/etc/foo"
-#   readOnly: true
+volumeMounts:
+- name: rails-storage
+  mountPath: /rails/storage
+  readOnly: false
+  persistentVolumeClaim:
+    claimName: bg3-tools-production-pvc
 
 nodeSelector: {}
 

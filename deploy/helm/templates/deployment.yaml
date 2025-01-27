@@ -41,9 +41,17 @@ spec:
             - name: {{ $name }}
               value: {{ $value | quote }}
             {{- end }}
+            - name: RAILS_MASTER_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.appName }}-master-key
+                  key: RAILS_MASTER_KEY
             {{- range $secret := .Values.env_secrets }}
-            - name: {{ $secret }}
-              value: "12345"
+            - name: {{ $secret.name }}
+              valueFrom:
+                secretKeyRef: 
+                  name: {{ $secret.secret }}
+                  key: {{ $secret.secretKey }}
             {{- end }}
           ports:
             - name: http

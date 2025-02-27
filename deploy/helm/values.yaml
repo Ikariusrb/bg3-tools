@@ -1,0 +1,116 @@
+# Default values for ..
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+appName: bg3-tools
+environment: production
+
+image:
+  repository: registry.jrbhome.net/bg3-tools
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+env:
+  RAILS_ENV: production
+  RAILS_LOG_TO_STDOUT: "true"
+  RAILS_SERVE_STATIC_FILES: "true"
+env_secrets: []
+# - name: env var name
+#   secret: secret name
+#   secretKey: key for secret data
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext: {} # fsGroup: 2000
+
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+  # readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 3000
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: ca-issuer
+  hosts:
+  - host: bg3-tools.prd.jrbhome.net
+    paths:
+    - path: /
+      pathType: ImplementationSpecific
+  tls:
+  - secretName: bg3-tools-production-tls
+    hosts:
+    - bg3-tools.prd.jrbhome.net
+
+resources:
+  limits:
+    cpu: 1
+    memory: 1Gi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+livenessProbe:
+  httpGet:
+    path: /up
+    port: http
+readinessProbe:
+  httpGet:
+    path: /up
+    port: http
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+  # Additional volumes on the output Deployment definition.
+volumes:
+- name: rails-storage
+  persistentVolumeClaim:
+    claimName: bg3-tools-production-pvc
+# - name: foo
+#   secret:
+#     secretName: mysecret
+#     optional: false
+
+# Additional volumeMounts on the output Deployment definition.
+volumeMounts:
+- name: rails-storage
+  mountPath: /rails/storage
+  readOnly: false
+  persistentVolumeClaim:
+    claimName: bg3-tools-production-pvc
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

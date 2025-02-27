@@ -39,8 +39,8 @@ gem "thruster", require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
-gem "phlex", "~> 1.11"
-gem "phlex-rails", "~> 1.2"
+gem "phlex", "~> 2.0"
+gem "phlex-rails", "~> 2.0"
 gem "heroicon", "~> 1.0"
 
 group :development, :test do

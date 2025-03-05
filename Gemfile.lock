@@ -185,9 +185,9 @@ GEM
     parser (3.3.6.0)
       ast (~> 2.4.1)
       racc
-    phlex (2.0.2)
-    phlex-rails (2.0.2)
-      phlex (~> 2.0.2)
+    phlex (2.1.0)
+    phlex-rails (2.1.0)
+      phlex (~> 2.1.0)
       railties (>= 6.1, < 9)
     pp (0.6.2)
       prettyprint
@@ -390,7 +390,7 @@ DEPENDENCIES
   heroicon (~> 1.0)
   jsbundling-rails
   kamal
-  phlex (~> 2.0)
+  phlex (~> 2.1)
   phlex-rails (~> 2.0)
   propshaft
   pry (~> 0.15.2)

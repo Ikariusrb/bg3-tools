@@ -42,11 +42,13 @@ gem "thruster", require: false
 gem "phlex", "~> 2.0"
 gem "phlex-rails", "~> 2.1"
 gem "heroicon", "~> 1.0"
+gem "mechanize", "~> 2.14"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
   gem "pry", "~> 0.15.2"
+  gem "pry-rails", "~> 0.3.11"
 
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false

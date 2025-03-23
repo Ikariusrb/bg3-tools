@@ -2,6 +2,7 @@
 
 class ApplicationLayout < ApplicationView
   include Phlex::Rails::Layout
+  include Phlex::Rails::Helpers::Routes
 
   def view_template(&block)
     doctype
@@ -24,7 +25,7 @@ class ApplicationLayout < ApplicationView
       end
 
       body(class: "antialiased text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900") do
-        render NavComponent.new do |nav|
+        render Components::Nav.new do |nav|
           nav.item(items_path) { "Items" }
           nav.item("/foo") { "Builds" }
         end

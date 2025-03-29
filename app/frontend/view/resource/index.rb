@@ -46,7 +46,7 @@ class View::Resource::Index < ApplicationView
     end
 
     div(class: "flex flex-row basis-11/12") do
-      link_to( 
+      link_to(
         "New",
         url_for(action: :new),
         class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
@@ -68,7 +68,7 @@ class View::Resource::Index < ApplicationView
       end
     end
   end
-  
+
   def resource_actions(resource)
     div(class: "flex flex-row gap-4") do
       link_to(resource, class: 'inline-block') do
@@ -78,7 +78,7 @@ class View::Resource::Index < ApplicationView
       link_to(polymorphic_url(resource, action: :edit, class: 'inline-block')) do
         span(class: "svg-image") { heroicon("pencil", variant: :mini) }
       end
-      
+
       link_to(
         url_for(resource),
         data: {

@@ -1,5 +1,4 @@
 class String
-
   def lstrip
     sub(/^[[:space:]]+/, '')
   end

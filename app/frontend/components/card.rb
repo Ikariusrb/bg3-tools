@@ -16,5 +16,4 @@ class Components::Card < Components::Base
       end
     end
   end
-
 end

@@ -2,7 +2,7 @@
 
 class ItemScraper
   attr_reader :item_name
-  
+
   BASE_URL = 'https://bg3.wiki/wiki/'
   CACHE_DURATION = 2.days
 
@@ -15,7 +15,7 @@ class ItemScraper
   def initialize(item_name)
     @item_name = item_name
   end
-  
+
   def item_details
     ItemStruct.new(
       name: parsed_name,
@@ -33,7 +33,6 @@ class ItemScraper
   private
 
   def fetch_item_details
-    
     # Extract data from the document
     name = parsed_name
     description = item_description
@@ -88,7 +87,7 @@ class ItemScraper
   def item_value
     @item_value ||= item_special_properties.find { |prop| prop.start_with?("Price:") }.delete_prefix("Price: ").strip
   end
-  
+
   def extract_image_url
     img_element = document.css('.infobox-image img').first
     img_element ? img_element['src'] : nil
@@ -99,7 +98,7 @@ class ItemScraper
   end
 
   def url
-    @url ||= item_name.titlecase.gsub(/ Of /, " of ").gsub(/ The /, " the ").gsub(' ','_')
+    @url ||= item_name.titlecase.gsub(/ Of /, " of ").gsub(/ The /, " the ").gsub(' ', '_')
   end
 
   def fetch_document(url)

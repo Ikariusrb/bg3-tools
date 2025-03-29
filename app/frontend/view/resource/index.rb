@@ -36,11 +36,8 @@ class View::Resource::Index < ApplicationView
               end
             end
             tbody(class: "bg-white dark:bg-slate-800") do
-              whitespace
               resources.each do |resource|
-                whitespace
                 row_template(resource)
-                whitespace
               end
             end
           end
@@ -49,10 +46,11 @@ class View::Resource::Index < ApplicationView
     end
 
     div(class: "flex flex-row basis-11/12") do
-      link_to "New",
-              url_for(action: :new),
-              class:
-                "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+      link_to(
+        "New",
+        url_for(action: :new),
+        class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+      )
     end
   end
 
@@ -61,41 +59,39 @@ class View::Resource::Index < ApplicationView
       tr(class: "even:bg-slate-800 odd:bg-slate-600") do
         index_columns.each do |column|
           td(class: "border-b border-slate-400 p-2 font-medium") do
-            whitespace
             plain resource.public_send(column)
           end
         end
         td(class: "border-b border-slate-400 p-2 font-medium") do
-          link_to(resource) do
-            span(class: "svg-image") do
-              heroicon("eye", variant: :mini)
-            end
-            whitespace
-          end
-          whitespace
-          link_to(polymorphic_url(resource, action: :edit)) do
-            span(class: "svg-image") do
-              heroicon("pencil", variant: :mini)
-            end
-            whitespace
-          end
-          whitespace
-          link_to(
-            url_for(resource),
-            data: {
-              turbo_method: :delete,
-              turbo_confirm: "Are you certain you want to delete this?"
-            }
-          ) do
-            span(class: "svg-image") do
-              heroicon("trash", variant: :mini)
-            end
-            whitespace
-          end
+          resource_actions(resource)
         end
       end
     end
   end
+
+  def resource_actions(resource)
+    div(class: "flex flex-row gap-4") do
+      link_to(resource, class: 'inline-block') do
+        span(class: "svg-image") { heroicon("eye", variant: :mini) }
+      end
+
+      link_to(polymorphic_url(resource, action: :edit, class: 'inline-block')) do
+        span(class: "svg-image") { heroicon("pencil", variant: :mini) }
+      end
+
+      link_to(
+        url_for(resource),
+        data: {
+          turbo_method: :delete,
+          turbo_confirm: "Are you certain you want to delete this?"
+        },
+        class: 'inline-block'
+      ) do
+        span(class: "svg-image") { heroicon("trash", variant: :mini) }
+      end
+    end
+  end
+
   private
 
   def index_columns

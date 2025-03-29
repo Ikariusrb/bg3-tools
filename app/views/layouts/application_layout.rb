@@ -16,11 +16,13 @@ class ApplicationLayout < ApplicationView
         stylesheet_link_tag "application", data_turbo_track: "reload"
         javascript_include_tag "application", data_turbo_track: "reload", type: "module"
         script do
+          raw safe(
           <<~JS
             if (window.history.state && window.history.state.turbo) {
               window.addEventListener("popstate", function () { location.reload(true); });
             }
           JS
+          )
         end
       end
 

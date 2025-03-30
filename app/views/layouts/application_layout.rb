@@ -29,7 +29,7 @@ class ApplicationLayout < ApplicationView
       body(class: "antialiased text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900") do
         render Components::Nav.new do |nav|
           nav.item(items_path) { "Items" }
-          nav.item("/foo") { "Builds" }
+          nav.item(builds_path) { "Builds" }
         end
         p { yield :message }
         main do

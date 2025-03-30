@@ -16,12 +16,15 @@ class View::Items::Edit < Phlex::HTML
   def view_template
     Components::Card(title: "Edit Item") do
       form_for(resource) do |f|
-        resource.attributes.except(*%w[id created_at updated_at]).transform_keys(&:to_sym).each do |attribute, value|
+        resource.attributes.except(*%w[id created_at updated_at item_type]).transform_keys(&:to_sym).each do |attribute, value|
           div do
             f.label attribute
             f.text_field attribute
           end
         end
+        type_options = resource.defined_enums['item_type'].keys.sort
+        f.label 'item_type'
+        f.select(:item_type, type_options, { include_blank: false }, { data: { controller: 'slim_select', slim_target: 'field' } })
         div do
           form_actions(f)
         end

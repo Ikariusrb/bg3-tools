@@ -18,4 +18,9 @@
 #
 class Item < ApplicationRecord
     include Scrapeable
+    enum :item_type, [
+      :boots, :rings, :gloves, :helmets, :amulets, :shields, :cloaks, :clothing, :lightarmor, :mediumarmor,
+      :longswords, :maces, :scimitars, :tridents, :shortswords, :daggers, :spears, :warhammers, :battleaxes,
+      :greatswords, :javelins, :pikes, :lighthammers, :clubs
+    ]
 end

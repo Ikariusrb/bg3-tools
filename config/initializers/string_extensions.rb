@@ -10,4 +10,8 @@ class String
   def strip
     lstrip.rstrip
   end
+
+  def plural?
+    self.singularize != self && self.singularize.pluralize == self
+  end
 end

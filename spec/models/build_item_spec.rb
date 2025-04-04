@@ -18,7 +18,8 @@
 #  build_id  (build_id => builds.id)
 #  item_id   (item_id => items.id)
 #
-class BuildItem < ApplicationRecord
-  belongs_to :build
-  belongs_to :item
+require 'rails_helper'
+
+RSpec.describe BuildItem, type: :model do
+  pending "add some examples to (or delete) #{__FILE__}"
 end

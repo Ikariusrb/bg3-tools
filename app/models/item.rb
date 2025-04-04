@@ -17,10 +17,14 @@
 #  updated_at  :datetime         not null
 #
 class Item < ApplicationRecord
-    include Scrapeable
-    enum :item_type, [
-      :boots, :rings, :gloves, :helmets, :amulets, :shields, :cloaks, :clothing, :lightarmor, :mediumarmor,
-      :longswords, :maces, :scimitars, :tridents, :shortswords, :daggers, :spears, :warhammers, :battleaxes,
-      :greatswords, :javelins, :pikes, :lighthammers, :clubs
-    ]
+  include Scrapeable
+
+  has_many :build_items
+  has_many :builds, through: :build_items
+
+  enum :item_type, [
+    :boots, :rings, :gloves, :helmets, :amulets, :shields, :cloaks, :clothing, :lightarmor, :mediumarmor,
+    :longswords, :maces, :scimitars, :tridents, :shortswords, :daggers, :spears, :warhammers, :battleaxes,
+    :greatswords, :javelins, :pikes, :lighthammers, :clubs
+  ]
 end

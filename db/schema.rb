@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_30_045943) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_04_004549) do
+  create_table "build_items", force: :cascade do |t|
+    t.integer "build_id", null: false
+    t.integer "item_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["build_id"], name: "index_build_items_on_build_id"
+    t.index ["item_id"], name: "index_build_items_on_item_id"
+  end
+
   create_table "builds", force: :cascade do |t|
     t.string "name"
     t.string "description"
@@ -32,4 +41,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_30_045943) do
     t.string "weight"
     t.string "effects"
   end
+
+  add_foreign_key "build_items", "builds"
+  add_foreign_key "build_items", "items"
 end

@@ -39,6 +39,9 @@ class Scraper::Item < Scraper::Base
       price: item_price,
       effects: item_effects,
     )
+  rescue StandardError => e
+    Rails.logger.error("Error scraping item data for #{search_name}: #{e.message}")
+    ItemStruct.new
   end
 
   private
@@ -53,10 +56,22 @@ class Scraper::Item < Scraper::Base
   end
 
   def item_special_properties
-    @item_special_properties ||= document.root
-      .xpath('//div[contains(@class,"bg3wiki-property-list")]')
-      .xpath('.//li')
-      .map { |li| li.text.strip }
+    @item_special_properties ||= begin
+      li_version = document.root
+        .xpath('//div[contains(@class,"bg3wiki-property-list")]')
+        .xpath('.//li')
+      dl_version = document.root
+        .xpath('//div[contains(@class,"bg3wiki-property-list")]')
+        .xpath('.//dl')
+        .xpath('.//dd')
+      if li_version.present?
+        li_version.map { |li| li.text.strip }
+      elsif dl_version.present?
+        dl_version.map { |dd| dd.children.map { |c2| c2.text.strip }.join }
+      else
+        []
+      end
+    end
   end
 
   def item_uuid

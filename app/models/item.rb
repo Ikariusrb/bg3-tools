@@ -23,6 +23,8 @@
 class Item < ApplicationRecord
   include Scrapeable
 
+  UNIQUE_COLUMNS = %i[name].freeze
+
   has_many :build_items
   has_many :builds, through: :build_items
 

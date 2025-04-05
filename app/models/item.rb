@@ -16,6 +16,10 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
+# Indexes
+#
+#  index_items_on_name  (name) UNIQUE
+#
 class Item < ApplicationRecord
   include Scrapeable
 

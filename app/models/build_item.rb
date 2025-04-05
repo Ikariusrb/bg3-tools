@@ -10,8 +10,9 @@
 #
 # Indexes
 #
-#  index_build_items_on_build_id  (build_id)
-#  index_build_items_on_item_id   (item_id)
+#  index_build_items_on_build_id              (build_id)
+#  index_build_items_on_item_id               (item_id)
+#  index_build_items_on_item_id_and_build_id  (item_id,build_id) UNIQUE
 #
 # Foreign Keys
 #

@@ -1,8 +1,23 @@
- # frozen_string_literal: true
+# frozen_string_literal: true
 
- class FindEquipment
+class FindEquipment
+  ODD_INCLUSIONS = [ "Tough Sunrises", "The Sparky Points", "Shining Staver-of-Skulls",  "Dolor Amarus", "BOOOAL's Arms" ].freeze
+
   def call
-    equip_links_from("/w/index.php?title=Category:Equipment")
+    raw_equip_links.reject { |name, _| rejects.include?(name) }
+  end
+
+  def rejects
+    @rejects ||= (raw_equip_links
+      .map(&:first)
+      .select(&:plural?)
+      .reject { |name| name.include?(" of ") } -
+      ODD_INCLUSIONS)
+      .to_set
+  end
+
+  def raw_equip_links
+    @equip_links ||= equip_links_from("/w/index.php?title=Category:Equipment")
   end
 
   def equip_links_from(url)
@@ -15,7 +30,6 @@
       links += all_href.reject do |link|
         next true if link.text == "next page"
         next true if link.text == "previous page"
-        # next true if link.text.plural?
         next true if link.attributes["href"].value.include? "Category"
         false
       end
@@ -30,4 +44,4 @@
   def parser
     @parser ||= Mechanize.new
   end
- end
+end

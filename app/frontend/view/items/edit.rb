@@ -14,7 +14,7 @@ class View::Items::Edit < Phlex::HTML
   end
 
   def view_template
-    Components::Card(title: "Edit Item") do
+    Components::Card(title: "Edit Item", extra_css: %w[m-8]) do
       form_for(resource) do |f|
         resource.attributes.except(*%w[id created_at updated_at item_type]).transform_keys(&:to_sym).each do |attribute, value|
           div do

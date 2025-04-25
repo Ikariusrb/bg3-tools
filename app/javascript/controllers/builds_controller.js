@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="builds"
 export default class extends Controller {
-  static targets = ["itemSelect"]
+  static targets = ["select", "form"]
 
   connect() {
     console.log("Builds controller connected")
@@ -11,7 +11,7 @@ export default class extends Controller {
   addSelectedItem(event) {
     event.preventDefault()
     // Get the value from the main form's item selector
-    const selectElement = document.querySelector("select[name='build[item_id]']")
+    const selectElement = this.selectTarget
     
     if (!selectElement || !selectElement.value) {
       alert("Please select an item first")
@@ -21,7 +21,7 @@ export default class extends Controller {
     // Set the selected item ID in the hidden field
     document.getElementById("selected_item_id").value = selectElement.value
     
-    // Submit the form
-    event.target.closest("form").submit()
+    // Submit the form and let Turbo handle the stream response
+    this.formTarget.requestSubmit()
   }
 }

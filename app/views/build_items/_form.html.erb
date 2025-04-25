@@ -1,0 +1,36 @@
+<%= form_with(
+      url: url_for(controller: "build_items", action: "create"),
+      id: "build_items",
+      class: "inline-block",
+      format: :turbo_stream,
+      local: false,
+      data: { turbo: true, turbo_stream: true, controller: 'builds', builds_target: 'form' }
+) do |f| %>
+  <%= hidden_field_tag "build_item[build_id]", build_item.build_id %>
+  <%= hidden_field_tag "build_item[item_id]", "", id: "selected_item_id" %>
+  
+  <% if build_item.errors.any? %>
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" role="alert">
+      <strong class="font-bold">Error:</strong>
+      <ul>
+        <% build_item.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <div class="mt-4">
+    <div class="flex items-end space-x-2">
+      <div class="flex-grow">
+        <%= f.label :items %>
+        <%= f.select :items, Item.pluck(:name, :id), {}, { data: { controller: 'slim-select', slim_target: 'field', builds_target: 'select' }, class: "w-full" } %>
+      </div>
+      <button type="submit" 
+              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              data-action="builds#addSelectedItem">
+        Add Item
+      </button>
+    </div>
+  </div>
+<% end %>

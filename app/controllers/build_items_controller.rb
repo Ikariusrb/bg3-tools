@@ -1,7 +1,8 @@
-class BuildItemController < ApplicationController
+class BuildItemsController < ApplicationController
   PERMIT_ATTRIBUTES = [ :build_id, :item_id ].freeze
 
   def create
+    binding.pry
     build_item = BuildItem.new(build_item_params)
 
     if build_item.save

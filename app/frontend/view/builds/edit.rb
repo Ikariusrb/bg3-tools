@@ -32,15 +32,15 @@ class View::Builds::Edit < Phlex::HTML
           end
         end
 
-          form_with(url: url_for(controller: "build_items", action: "create"), method: :post, class: "inline-block") do |f|
+          form_with(url: url_for(controller: "build_items", action: "create"), method: :post, class: "inline-block", data: { controller: 'builds', builds_target: 'form' }) do |f|
             input(type: "hidden", name: "build_item[build_id]", value: resource.id)
             input(type: "hidden", name: "build_item[item_id]", id: "selected_item_id")
             # Add items section with dropdown and add button
-            div(class: "mt-4", data: { controller: "builds" }) do
+            div(class: "mt-4") do
               div(class: "flex items-end space-x-2") do
                 div(class: "flex-grow") do
                   f.label "Items"
-                  f.select(:items, Item.pluck(:name, :id), {}, { data: { controller: 'slim-select', slim_target: 'field' }, class: "w-full" })
+                  f.select(:items, Item.pluck(:name, :id), {}, { data: { controller: 'slim-select', slim_target: 'field', builds_target: 'select' }, class: "w-full" })
                 end
 
                 button(type: "submit", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline",

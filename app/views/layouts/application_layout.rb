@@ -14,6 +14,7 @@ class ApplicationLayout < ApplicationView
         csp_meta_tag
         csrf_meta_tags
         stylesheet_link_tag "application", data_turbo_track: "reload"
+        stylesheet_link_tag "https://cdnjs.cloudflare.com/ajax/libs/slim-select/2.10.0/slimselect.min.css", data_turbo_track: "reload"
         javascript_include_tag "application", data_turbo_track: "reload", type: "module"
         script do
           raw safe(

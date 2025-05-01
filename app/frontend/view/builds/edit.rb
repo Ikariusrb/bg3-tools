@@ -32,7 +32,11 @@ class View::Builds::Edit < Phlex::HTML
           end
         end
 
-          form_with(url: url_for(controller: "build_items", action: "create"), method: :post, class: "inline-block", data: { controller: 'builds', builds_target: 'form' }) do |f|
+          form_with(
+            url: url_for(controller: "build_items", action: "create"),
+            class: "inline-block",
+            data: { turbo: true, turbo_stream: true, controller: 'builds', builds_target: 'form' }
+            ) do |f|
             input(type: "hidden", name: "build_item[build_id]", value: resource.id)
             input(type: "hidden", name: "build_item[item_id]", id: "selected_item_id")
             # Add items section with dropdown and add button

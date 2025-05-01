@@ -5,10 +5,15 @@ class BuildItemsController < ApplicationController
     binding.pry
     build_item = BuildItem.new(build_item_params)
 
-    if build_item.save
-      render json: { status: :success, build_item: build_item }, status: :created
-    else
-      render json: { status: :error, errors: build_item.errors }, status: :unprocessable_entity
+    respond_to do |format|
+      format.turbo_stream do
+        binding.pry
+        if build_item.save
+          render json: { status: :success, build_item: build_item }, status: :created
+        else
+          render json: { status: :error, errors: build_item.errors }, status: :unprocessable_entity
+        end
+      end
     end
   end
 

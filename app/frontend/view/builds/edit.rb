@@ -34,10 +34,11 @@ class View::Builds::Edit < Phlex::HTML
           end
         end
 
+        h3(class: "text-lg font-semibold mb-0 mt-4") { "Build Items" }
         form_with(
           url: url_for(controller: "build_items", action: "create"),
           id: "build_items",
-          class: "inline-block",
+          class: "inline-block mt-0 pt-0",
           format: :turbo_stream,
           local: false,
           data: { turbo: true, turbo_stream: true, controller: 'builds', builds_target: 'form' }
@@ -45,10 +46,9 @@ class View::Builds::Edit < Phlex::HTML
           input(type: "hidden", name: "build_item[build_id]", value: resource.id)
           input(type: "hidden", name: "build_item[item_id]", id: "selected_item_id")
           # Add items section with dropdown and add button
-          div(class: "mt-4") do
-            div(class: "flex items-end space-x-2") do
+          div do
+            div(class: "flex items-end space-x-2 items-center") do
               div(class: "flex-grow") do
-                f.label "Items"
                 f.select(:items, Item.pluck(:name, :id), {}, { data: { controller: 'slim-select', slim_target: 'field', builds_target: 'select' }, class: "w-full" })
               end
 

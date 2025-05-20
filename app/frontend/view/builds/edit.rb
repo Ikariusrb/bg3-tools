@@ -8,6 +8,7 @@ class View::Builds::Edit < Phlex::HTML
   include Phlex::Rails::Helpers::FormWith
   include Phlex::Rails::Helpers::SelectTag
   include Phlex::Rails::Helpers::TurboFrameTag
+  register_value_helper :heroicon
 
 
   attr_reader :resource, :action, :notice
@@ -21,17 +22,8 @@ class View::Builds::Edit < Phlex::HTML
   def view_template
     div(class: "mx-4 my-6 md:mx-6 lg:mx-8") do
       Components::Card(title: "Edit build") do
-        form_for(resource) do |f|
-          resource.attributes.except(*%w[id created_at updated_at]).transform_keys(&:to_sym).each do |attribute, value|
-            div do
-              f.label attribute
-              f.text_field attribute
-            end
-          end
-
-          div do
-            form_actions(f)
-          end
+        turbo_frame_tag "build_form" do
+          render View::Builds::EditForm.new(resource, action: action)
         end
 
         h3(class: "text-lg font-semibold mb-0 mt-4") { "Build Items" }
@@ -52,9 +44,8 @@ class View::Builds::Edit < Phlex::HTML
                 f.select(:items, Item.pluck(:name, :id), {}, { data: { controller: 'slim-select', slim_target: 'field', builds_target: 'select' }, class: "w-full" })
               end
 
-              button(type: "submit", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline",
-                data: { action: "builds#addSelectedItem" }) do
-                "Add Item"
+              button(type: "submit", data: { action: "builds#addSelectedItem" }) do
+                heroicon("plus-circle", variant: :outline)
               end
             end
           end
@@ -65,15 +56,6 @@ class View::Builds::Edit < Phlex::HTML
           render View::BuildItems::TableFrame.new(build: resource)
         end
       end
-    end
-  end
-
-  def form_actions(form)
-    form.submit("Save", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline")
-    if action == :new
-      link_to("Cancel", url_for(action: :index))
-    else
-      link_to("Cancel", url_for(resource))
     end
   end
 end

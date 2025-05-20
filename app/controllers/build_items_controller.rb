@@ -3,17 +3,17 @@ class BuildItemsController < ApplicationController
 
   def create
     build_item = BuildItem.new(build_item_params)
+    @build_item = build_item
+    @build = build_item.build
 
     respond_to do |format|
       format.turbo_stream do
         if build_item.save
-          @build_item = build_item
-          @build = build_item.build
           # Refresh the entire build items table frame
           render turbo_stream: turbo_stream.replace("build_items_table_frame", View::BuildItems::TableFrame.new(build: @build))
         else
-          render turbo_stream: turbo_stream.replace("build_items",
-            partial: "build_items/form",
+          render turbo_stream: turbo_stream.replace("build_form",
+            View::Builds::EditForm.new(@build, action: :edit),
             locals: { build_item: build_item })
         end
       end

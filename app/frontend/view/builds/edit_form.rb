@@ -22,13 +22,13 @@ class View::Builds::EditForm < Phlex::HTML
   def view_template
     form_for(resource) do |f|
       resource.attributes.except(*%w[id created_at updated_at]).transform_keys(&:to_sym).each do |attribute, value|
-        div do
-          f.label attribute
+        div(class: 'space-x-2 my-2') do
+          f.label(attribute, class: 'inline-block text-right w-20')
           f.text_field attribute
         end
       end
 
-      div do
+      div(class: 'my-2') do
         form_actions(f)
       end
     end

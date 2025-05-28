@@ -213,11 +213,12 @@ GEM
     parser (3.3.7.1)
       ast (~> 2.4.1)
       racc
-    phlex (2.2.1)
+    phlex (2.3.1)
       zeitwerk (~> 2.7)
-    phlex-rails (2.2.0)
-      phlex (~> 2.2.1)
+    phlex-rails (2.3.0)
+      phlex (~> 2.3.0)
       railties (>= 7.1, < 9)
+      zeitwerk (~> 2.7)
     pp (0.6.2)
       prettyprint
     prettyprint (0.2.0)
@@ -399,7 +400,7 @@ GEM
       base64
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    zeitwerk (2.7.2)
+    zeitwerk (2.7.3)
 
 PLATFORMS
   aarch64-linux
@@ -427,7 +428,7 @@ DEPENDENCIES
   jsbundling-rails
   kamal
   mechanize (~> 2.14)
-  phlex (~> 2.0)
+  phlex (~> 2.3)
   phlex-rails (~> 2.2)
   propshaft
   pry (~> 0.15.2)

@@ -55,9 +55,12 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+end
 
+group :test do
   gem "rspec", "~> 3.13"
   gem "rspec-rails", "~> 8.0"
+  gem "rspec-github", "~> 3.0"
   gem "annotaterb", "~> 4.14"
 end
 

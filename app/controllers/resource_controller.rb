@@ -10,9 +10,9 @@ class ResourceController < ApplicationController
       index_view = View::Resource::Index
     end
     render index_view.new(
-        model.all.load_async,
-        notice: notice
-      )
+      model.all.load_async,
+      notice: notice
+    )
   end
 
   def show

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class FindEquipment
-  ODD_INCLUSIONS = [ "Tough Sunrises", "The Sparky Points", "Shining Staver-of-Skulls",  "Dolor Amarus", "BOOOAL's Arms" ].freeze
+  ODD_INCLUSIONS = [ "Tough Sunrises", "The Sparky Points", "Shining Staver-of-Skulls", "Dolor Amarus", "BOOOAL's Arms" ].freeze
 
   def call
     raw_equip_links.reject { |name, _| rejects.include?(name) }
@@ -34,7 +34,7 @@ class FindEquipment
         false
       end
     end
-    links.map { |a|  [ a.text, a.attributes["href"]&.value ] }
+    links.map { |a| [ a.text, a.attributes["href"]&.value ] }
   end
 
   def fetch_document(url)

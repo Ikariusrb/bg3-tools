@@ -22,7 +22,7 @@ class View::BuildItems::SubForm < Phlex::HTML
       format: :turbo_stream,
       local: false,
       data: { turbo: true, turbo_stream: true, controller: 'builds', builds_target: 'form' }
-      ) do |f|
+    ) do |f|
       input(type: "hidden", name: "build_item[build_id]", value: resource.id)
       input(type: "hidden", name: "build_item[item_id]", id: "selected_item_id")
       # Add items section with dropdown and add button

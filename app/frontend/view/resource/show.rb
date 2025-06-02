@@ -24,8 +24,8 @@ class View::Resource::Show < Phlex::HTML
       end
     end
     link_to "All #{resource.class.name.pluralize}",
-            url_for(action: :index),
-            class:
-              "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+      url_for(action: :index),
+      class:
+        "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
   end
 end

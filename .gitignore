@@ -7,6 +7,9 @@
 # Ignore bundler config.
 /.bundle
 
+# Ignore rubocop https cache
+/.rubocop-https*
+
 # Ignore all environment files.
 /.env*
 

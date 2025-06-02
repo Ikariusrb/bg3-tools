@@ -14,6 +14,6 @@ class String
   end
 
   def plural?
-    self.singularize != self && self.singularize.pluralize == self
+    singularize != self && singularize.pluralize == self
   end
 end

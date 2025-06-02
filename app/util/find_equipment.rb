@@ -4,7 +4,7 @@ class FindEquipment
   ODD_INCLUSIONS = [ "Tough Sunrises", "The Sparky Points", "Shining Staver-of-Skulls", "Dolor Amarus", "BOOOAL's Arms" ].freeze
 
   def call
-    raw_equip_links.reject { |name, _| rejects.include?(name) }
+    raw_equip_links.except(*rejects)
   end
 
   def rejects

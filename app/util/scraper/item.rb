@@ -39,7 +39,7 @@ class Scraper::Item < Scraper::Base
       price: item_price,
       effects: item_effects,
     )
-  rescue StandardError => e
+  rescue => e
     Rails.logger.error("Error scraping item data for #{search_name}: #{e.message}")
     ItemStruct.new
   end
@@ -131,6 +131,6 @@ class Scraper::Item < Scraper::Base
   end
 
   def url
-    @url ||= BASE_URL + search_name.titlecase.gsub(/ Of /, " of ").gsub(/ The /, " the ").gsub(' ', '_')
+    @url ||= BASE_URL + search_name.titlecase.gsub(' Of ', " of ").gsub(' The ', " the ").gsub(' ', '_')
   end
 end

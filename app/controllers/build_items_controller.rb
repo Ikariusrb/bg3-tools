@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class BuildItemsController < ApplicationController
   PERMIT_ATTRIBUTES = [ :build_id, :item_id ].freeze
 

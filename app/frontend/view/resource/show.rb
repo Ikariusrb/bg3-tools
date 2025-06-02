@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # /home/rbecker/code/bg3-tools/app/views/items/show.rb
 
 class View::Resource::Show < Phlex::HTML

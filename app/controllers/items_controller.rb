@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ItemsController < ResourceController
   RESOURCE = "item".freeze
   INDEX_COLUMNS = %w[name description uuid].freeze

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 tmp_secret = Tempfile.new.path
 tmp_sealed_secret = Tempfile.new.path
 secret_namespace = "apps-production"

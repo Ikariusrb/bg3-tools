@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class View::Resource::Edit < Phlex::HTML
   include Phlex::Rails::Helpers::FormFor
   include Phlex::Rails::Helpers::LinkTo

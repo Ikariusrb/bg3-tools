@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class View::Builds::Edit < Phlex::HTML
   include Phlex::Rails::Helpers::FormFor
   include Phlex::Rails::Helpers::LinkTo
@@ -9,7 +11,6 @@ class View::Builds::Edit < Phlex::HTML
   include Phlex::Rails::Helpers::SelectTag
   include Phlex::Rails::Helpers::TurboFrameTag
   register_value_helper :heroicon
-
 
   attr_reader :resource, :action, :notice
 

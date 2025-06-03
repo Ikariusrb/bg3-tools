@@ -19,7 +19,7 @@ class Components::Nav < Components::Base
       href: url,
       class: current_path?(url) ? CURRENT_ITEM_CLASS : OTHER_ITEM_CLASS,
       &
-      )
+    )
   end
 
   def current_path?(path)

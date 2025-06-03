@@ -23,7 +23,7 @@ class ApplicationLayout < ApplicationView
               window.addEventListener("popstate", function () { location.reload(true); });
             }
           JS
-          )
+        )
         end
       end
 

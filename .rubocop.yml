@@ -1,6 +1,26 @@
 # Omakase Ruby styling for Rails
-inherit_gem: { rubocop-rails-omakase: rubocop.yml }
+# inherit_gem: { rubocop-rails-omakase: rubocop.yml }
+inherit_from:
+- "https://www.goodcop.style/base.yml"
 
+plugins:
+- rubocop-rails
+
+AllCops:
+  TargetRubyVersion: 3.4
+  Exclude:
+  - 'vendor/**/*'
+  - "db/schema.rb"
+  - "bin/*"
+  - "Gemfile"
+  - "Gemfile.lock"
+  - "Rakefile"
+  - "config/initializers/inflections.rb"
+  - "config/initializers/mime_types.rb"
+  - "config/initializers/new_framework_defaults_*.rb"
+  - "config/initializers/permissions_policy.rb"
+  - "config/initializers/session_store.rb"
+  - "config/initializers/wrap_parameters.rb"
 # Overwrite or add rules to create your own house style
 #
 # # Use `[a, [b, c]]` not `[ a, [ b, c ] ]`
@@ -9,4 +29,37 @@ inherit_gem: { rubocop-rails-omakase: rubocop.yml }
 
 # Disable string literals enforcement (allows both single and double quotes)
 Style/StringLiterals:
+  Enabled: false
+
+Layout/SpaceInsideArrayLiteralBrackets:
+  Enabled: false
+
+Style/TrailingCommaInArrayLiteral:
+  Enabled: false
+
+Layout/MultilineArrayLineBreaks:
+  Enabled: false
+
+Style/HashSyntax:
+  Enabled: false
+
+Style/ObjectThen:
+  Enabled: false
+
+Style/WhileUntilDo:
+  Enabled: false
+
+Style/StringConcatenation:
+  Enabled: false
+
+Style/AccessModifierDeclarations:
+  Enabled: false
+
+Layout/MultilineAssignmentLayout:
+  Enabled: false
+
+Style/TrailingCommaInHashLiteral:
+  Enabled: false
+
+Lint/DuplicateRegexpCharacterClassElement:
   Enabled: false

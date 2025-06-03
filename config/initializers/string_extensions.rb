@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class String
   def lstrip
     sub(/^[[:space:]]+/, '')
@@ -7,11 +9,13 @@ class String
     sub(/[[:space:]]+$/, '')
   end
 
+  # rubocop:disable Style/Strip
   def strip
     lstrip.rstrip
   end
+  # rubocop:enable Style/Strip
 
   def plural?
-    self.singularize != self && self.singularize.pluralize == self
+    singularize != self && singularize.pluralize == self
   end
 end

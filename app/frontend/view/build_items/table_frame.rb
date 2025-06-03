@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class View::BuildItems::TableFrame < Phlex::HTML
   include Phlex::Rails::Helpers::FormFor
   include Phlex::Rails::Helpers::LinkTo

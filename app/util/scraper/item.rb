@@ -39,7 +39,7 @@ class Scraper::Item < Scraper::Base
       price: item_price,
       effects: item_effects,
     )
-  rescue StandardError => e
+  rescue => e
     Rails.logger.error("Error scraping item data for #{search_name}: #{e.message}")
     ItemStruct.new
   end
@@ -96,20 +96,20 @@ class Scraper::Item < Scraper::Base
 
   def item_effects
     @item_effects ||= begin
-      foo =document.root.xpath('//h3').find { |h| h.text.include?("Special") }
-       if foo.xpath('.//following-sibling::dl').empty?
+      foo = document.root.xpath('//h3').find { |h| h.text.include?("Special") }
+      if foo.xpath('.//following-sibling::dl').empty?
         foo.xpath('.//following-sibling::ul')
           .children.to_a
-          .map { |node| node.node_name == 'dt' ? node.text.strip + ": " : node.text.strip  + "\n" }
+          .map { |node| (node.node_name == 'dt') ? node.text.strip + ": " : node.text.strip + "\n" }
           .join
           .chomp
-       else
+      else
         foo.xpath('.//following-sibling::dl')
           .children.to_a
-          .map { |node| node.node_name == 'dt' ? node.text.strip + ": " : node.text.strip  + "\n" }
+          .map { |node| (node.node_name == 'dt') ? node.text.strip + ": " : node.text.strip + "\n" }
           .join
           .chomp
-       end
+      end
     end
   end
 
@@ -131,6 +131,6 @@ class Scraper::Item < Scraper::Base
   end
 
   def url
-    @url ||= BASE_URL + search_name.titlecase.gsub(/ Of /, " of ").gsub(/ The /, " the ").gsub(' ', '_')
+    @url ||= BASE_URL + search_name.titlecase.gsub(' Of ', " of ").gsub(' The ', " the ").gsub(' ', '_')
   end
 end

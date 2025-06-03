@@ -6,7 +6,7 @@ class Scraper::Base
 private
 
   def url
-    raise NotImplementedError, "Subclasses must implement the URL method"
+    raise NotImplementedError.new("Subclasses must implement the URL method")
   end
 
   def document

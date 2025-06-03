@@ -64,7 +64,7 @@ group :test do
   gem "rspec", "~> 3.13"
   gem "rspec-rails", "~> 8.0"
   gem "rspec-github", "~> 3.0"
-  gem "annotaterb", "~> 4.14"
+  gem "annotaterb", "~> 4.15"
 end
 
 group :development do

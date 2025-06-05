@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class ResourceController < ApplicationController
+  include ResourceNaming
   layout -> { ApplicationLayout }
 
   def index
@@ -59,23 +60,6 @@ class ResourceController < ApplicationController
     redirect_to redirect_dest, notice: "#{resource_singular} was successfully deleted"
   rescue ActiveRecord::RecordNotDestroyed => e
     redirect_to redirect_dest, notice: "#{resource_singular} could not be deleted: #{e.message}"
-  end
-
-  def resource_plural
-    @resource_plural ||=
-      if defined?(RESOURCE)
-        RESOURCE.pluralize.capitalize
-      else
-        self.class.name.delete_suffix("Controller")
-      end
-  end
-
-  def resource_singular
-    @resource_singular ||= resource_plural.singularize
-  end
-
-  def model
-    @resource_model ||= resource_singular.constantize
   end
 
   private

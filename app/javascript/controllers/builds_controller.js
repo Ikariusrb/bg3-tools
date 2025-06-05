@@ -10,18 +10,21 @@ export default class extends Controller {
 
   addSelectedItem(event) {
     event.preventDefault()
-    // Get the value from the main form's item selector
+
     const selectElement = this.selectTarget
-    
     if (!selectElement || !selectElement.value) {
       alert("Please select an item first")
       return
     }
+
+    const formElement = this.formTarget
+    const targetId = formElement.id + "_select_target"
+    const targetElement = Array.from(this.formTarget.getElementsByTagName("input")).find((element) => element.id == targetId)
     
-    // Set the selected item ID in the hidden field
-    document.getElementById("selected_item_id").value = selectElement.value
+    // Set the selected value in the hidden field
+    targetElement.value = selectElement.value
     
     // Submit the form and let Turbo handle the stream response
-    this.formTarget.requestSubmit()
+    formElement.requestSubmit()
   }
 }

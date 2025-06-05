@@ -23,11 +23,11 @@ class View::Builds::Edit < Phlex::HTML
   def view_template
     div(class: "mx-4 my-6 md:mx-6 lg:mx-8") do
       Components::Card(title: "Edit build") do
-        turbo_frame_tag "build_form" do
+        turbo_frame_tag "resource_form" do
           render View::Builds::EditForm.new(resource, action: action)
         end
 
-        render View::BuildItems::SubForm.new(resource: resource, sub_resource: nil)
+        render View::BuildItems::SubForm.new(resource: resource, sub_resource: nil, id: "foo")
       end
     end
   end

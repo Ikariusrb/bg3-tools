@@ -6,19 +6,19 @@ class View::BuildItems::SubForm < Phlex::HTML
   include Phlex::Rails::Helpers::FormWith
   register_value_helper :heroicon
 
-  attr_reader :resource, :sub_resource, :id
+  attr_reader :resource, :sub_resource, :init_id
 
   def initialize(resource:, sub_resource: nil, id: nil)
     @resource = resource
     @sub_resource = sub_resource
-    @id = id
+    @init_id = id
   end
 
   def view_template
     h3(class: "text-lg font-semibold mb-0 mt-4") { "Build Items" }
     form_with(
       url: url_for(controller: "build_items", action: "create"),
-      id: id || "build_items",
+      id: id,
       class: "inline-block mt-0 pt-0",
       format: :turbo_stream,
       local: false,
@@ -38,5 +38,9 @@ class View::BuildItems::SubForm < Phlex::HTML
     div do
       render View::BuildItems::SubFrame.new(build: resource)
     end
+  end
+
+  def id
+    @id ||= init_id || sub_resource
   end
 end

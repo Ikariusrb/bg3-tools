@@ -6,6 +6,8 @@ class View::Resource::Edit < Phlex::HTML
   include Phlex::Rails::Helpers::Routes
   include Phlex::Rails::Helpers::ControllerName
   include Phlex::Rails::Helpers::URLFor
+  include Phlex::Rails::Helpers::TurboFrameTag
+  include ResourceNaming
 
   attr_reader :resource, :action, :notice
 
@@ -16,22 +18,43 @@ class View::Resource::Edit < Phlex::HTML
   end
 
   def view_template
-    form_for(resource) do |f|
-      resource.attributes.except(*%w[id created_at updated_at]).transform_keys(&:to_sym).each do |attribute, value|
-        div do
-          f.label attribute
-          f.text_field attribute
+    div(class: "mx-4 my-6 md:mx-6 lg:mx-8") do
+      Components::Card(title: "Edit #{resource.class.name}") do
+        turbo_frame_tag "resource_form" do
+          render edit_form.new(resource, action: action)
         end
-      end
 
-      div do
-        f.submit("Save", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline")
-        if action == :new
-          link_to("Cancel", url_for(action: :index))
-        else
-          link_to("Cancel", url_for(resource))
+        subform_relations.each do |sub_resource|
+          sub_resource_viewname = sub_resource.camelcase.pluralize
+          render subform_for(sub_resource_viewname).new(resource: resource, sub_resource: sub_resource)
+          # render View::BuildItems::SubForm.new(resource: resource, sub_resource: nil, id: "foo")
         end
       end
     end
+  end
+
+  def edit_form
+    @edit_form ||=
+      if Object.const_defined?("View::#{resource_plural}::EditForm")
+        "View::#{resource_plural}::EditForm".constantize
+      else
+        View::Resource::EditForm
+      end
+  end
+
+  def subform_for(sub_resource)
+    if Object.const_defined?("View::#{sub_resource}::SubForm")
+      "View::#{sub_resource}::SubForm".constantize
+    else
+      View::Resource::SubForm
+    end
+  end
+
+  def subform_relations
+    @subform_attributes ||= resource.class.reflect_on_all_associations
+      .reject(&:through_reflection?)
+      .select { |assoc| assoc.macro == :has_many }
+      .map { |assoc| assoc.name.to_s }
+      .reject { |assoc| resource.class::NO_SUBFORM_RELATIONS.include?(assoc) }
   end
 end

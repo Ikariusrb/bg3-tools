@@ -27,6 +27,8 @@ class Item < ApplicationRecord
 
   UNIQUE_COLUMNS = %i[name].freeze
 
+  NO_SUBFORM_RELATIONS = %w[build_items].freeze
+
   has_many :build_items
   has_many :builds, through: :build_items
 

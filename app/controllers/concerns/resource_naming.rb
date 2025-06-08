@@ -10,6 +10,8 @@ module ResourceNaming
         @resource_plural ||=
           if defined?(RESOURCE)
             RESOURCE.camelcase.pluralize
+          elsif defined?(resource)
+            resource.class.name.camelcase.pluralize
           else
             self.class.name.delete_suffix("Controller")
           end

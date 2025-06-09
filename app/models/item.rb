@@ -29,12 +29,16 @@ class Item < ApplicationRecord
 
   NO_SUBFORM_RELATIONS = %w[build_items].freeze
 
-  has_many :build_items
+  ITEM_TYPE_VALUES = %i[
+    boots rings gloves helmets amulets shields cloaks clothing lightarmor mediumarmor
+    longswords maces scimitars tridents shortswords daggers spears warhammers battleaxes
+    greatswords javelins pikes lighthammers clubs
+  ].freeze
+
+  has_many :build_items, dependent: :restrict_with_exception
   has_many :builds, through: :build_items
 
-  enum :item_type, [
-    :boots, :rings, :gloves, :helmets, :amulets, :shields, :cloaks, :clothing, :lightarmor, :mediumarmor,
-    :longswords, :maces, :scimitars, :tridents, :shortswords, :daggers, :spears, :warhammers, :battleaxes,
-    :greatswords, :javelins, :pikes, :lighthammers, :clubs
-  ]
+  enum :item_type, ITEM_TYPE_VALUES.zip(ITEM_TYPE_VALUES.map(&:to_s)).to_h, validate: true
+
+  validates :name, uniqueness: true
 end

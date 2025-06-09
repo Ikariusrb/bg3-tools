@@ -105,6 +105,12 @@ GEM
     erubi (1.13.1)
     et-orbi (1.2.11)
       tzinfo
+    factory_bot (6.5.3)
+      activesupport (>= 6.1.0)
+    factory_bot_rails (6.4.4)
+      factory_bot (~> 6.5)
+      railties (>= 5.0.0)
+    ffaker (2.24.0)
     fugit (1.11.1)
       et-orbi (~> 1, >= 1.2.11)
       raabro (~> 1.4)
@@ -364,6 +370,8 @@ GEM
     rubyntlm (0.6.5)
       base64
     securerandom (0.4.1)
+    shoulda-matchers (6.5.0)
+      activesupport (>= 5.2.0)
     solid_cable (3.0.8)
       actioncable (>= 7.2)
       activejob (>= 7.2)
@@ -452,6 +460,8 @@ DEPENDENCIES
   brakeman
   cssbundling-rails
   debug
+  factory_bot_rails (~> 6.4)
+  ffaker
   heroicon (~> 1.0)
   jsbundling-rails
   kamal
@@ -470,6 +480,7 @@ DEPENDENCIES
   rubocop-discourse
   rubocop-rails
   rubocop-rails-omakase
+  shoulda-matchers (~> 6.0)
   solid_cable
   solid_cache
   solid_queue

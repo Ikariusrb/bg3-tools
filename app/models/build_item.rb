@@ -24,4 +24,6 @@
 class BuildItem < ApplicationRecord
   belongs_to :build
   belongs_to :item
+
+  validates :item, uniqueness: { scope: :build_id, message: 'item is already linked to this build' }
 end

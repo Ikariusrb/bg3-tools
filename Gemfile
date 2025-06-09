@@ -50,6 +50,8 @@ group :development, :test do
   gem "pry", "~> 0.15.2"
   gem "pry-rails", "~> 0.3.11"
 
+  gem "factory_bot_rails", "~> 6.4"
+
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
 
@@ -58,6 +60,7 @@ group :development, :test do
   gem "rubocop"
   gem "rubocop-rails"
   gem "rubocop-discourse"
+  gem "ffaker"
 end
 
 group :test do
@@ -65,9 +68,11 @@ group :test do
   gem "rspec-rails", "~> 8.0"
   gem "rspec-github", "~> 3.0"
   gem "annotaterb", "~> 4.15"
+  gem "shoulda-matchers", '~> 6.0'
 end
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
 end
+

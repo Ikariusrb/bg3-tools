@@ -60,6 +60,7 @@ group :development, :test do
   gem "rubocop"
   gem "rubocop-rails"
   gem "rubocop-discourse"
+  gem "ffaker"
 end
 
 group :test do

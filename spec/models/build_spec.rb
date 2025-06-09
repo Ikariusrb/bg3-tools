@@ -17,30 +17,16 @@
 require 'rails_helper'
 
 RSpec.describe Build, type: :model do
+  let(:build) { FactoryBot.build(:build) }
+  subject { build }
   describe 'associations' do
-    it 'has many build_items with dependent destroy' do
-      build = Build.reflect_on_association(:build_items)
-      expect(build.macro).to eq(:has_many)
-      expect(build.options[:dependent]).to eq(:destroy)
-    end
+    it { should have_many(:build_items).dependent(:destroy) }
 
-    it 'has many items through build_items' do
-      build = Build.reflect_on_association(:items)
-      expect(build.macro).to eq(:has_many)
-      expect(build.options[:through]).to eq(:build_items)
-    end
+    it { should have_many(:items).through(:build_items) }
   end
 
   describe 'validations' do
-    it 'validates uniqueness of name' do
-      # Create an initial build
-      FactoryBot.create(:build, name: 'Test Build')
-
-      # Try to create another with the same name
-      duplicate_build = FactoryBot.build(:build, name: 'Test Build')
-      expect(duplicate_build).not_to be_valid
-      expect(duplicate_build.errors[:name]).to include('has already been taken')
-    end
+    it { should validate_uniqueness_of(:name) }
   end
 
   describe 'basic functionality' do
@@ -58,7 +44,7 @@ RSpec.describe Build, type: :model do
       expect(build.items).to include(item2)
     end
 
-    it 'removes build_items when build is destroyed' do
+    it 'removes build_items but not items when build is destroyed' do
       build_item1 = FactoryBot.create(:build_item, build: build, item: item1)
       build_item2 = FactoryBot.create(:build_item, build: build, item: item2)
 

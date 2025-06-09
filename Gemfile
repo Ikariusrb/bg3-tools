@@ -50,6 +50,8 @@ group :development, :test do
   gem "pry", "~> 0.15.2"
   gem "pry-rails", "~> 0.3.11"
 
+  gem "factory_bot_rails", "~> 6.4"
+
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
 
@@ -71,3 +73,4 @@ group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
 end
+

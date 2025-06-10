@@ -2,12 +2,12 @@
 
 class View::Resource::Index < ApplicationView
   include Phlex::Rails::Helpers::LinkTo
-  include Phlex::Rails::Helpers::Routes
-  include Phlex::Rails::Helpers::URLFor
   include Phlex::Rails::Helpers::ControllerName
-  include Phlex::Rails::Helpers::DOMID
+  # include Phlex::Rails::Helpers::DOMID
   register_value_helper :heroicon
-  register_value_helper :polymorphic_url
+  include ResourceNaming
+  include Rails.application.routes.url_helpers
+  include ActionView::RecordIdentifier
 
   attr_reader :resources, :notice
 
@@ -21,25 +21,14 @@ class View::Resource::Index < ApplicationView
 
     div(class: "flex flex-row place-content-center") do
       div(id: "auto_tags", class: "relative overflow-auto basis-11/12") do
-        div(class: "border rounded-lg overflow-hidden my-8") do
-          table(class: "border-collapse table-auto w-full text-sm") do
-            thead(class: "dark:bg-slate-850") do
-              div(class: "pt-2") do
-                tr do
-                  [ *index_columns.map(&:capitalize), "Actions" ].each do |header|
-                    th(
-                      class:
-                        "border-b font-semibold p-4 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left"
-                    ) { header }
-                  end
-                end
-              end
+        render Components::Table.new(resources) do |t|
+          index_columns.each do |column|
+            t.column(column.capitalize) do |resource|
+              div(id: dom_id(resource)) { resource.public_send(column) }
             end
-            tbody(class: "bg-white dark:bg-slate-800") do
-              resources.each do |resource|
-                row_template(resource)
-              end
-            end
+          end
+          t.column("Actions") do |resource|
+            resource_actions(resource)
           end
         end
       end
@@ -48,7 +37,7 @@ class View::Resource::Index < ApplicationView
     div(class: "flex flex-row basis-11/12") do
       link_to(
         "New",
-        url_for(action: :new),
+        url_for(controller: resource_plural.underscore, action: :new, only_path: true),
         class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
       )
     end
@@ -75,12 +64,12 @@ class View::Resource::Index < ApplicationView
         span(class: "svg-image") { heroicon("eye", variant: :mini) }
       end
 
-      link_to(polymorphic_url(resource, action: :edit, class: 'inline-block')) do
+      link_to(resource_path_for(resource, :edit), class: 'inline-block') do
         span(class: "svg-image") { heroicon("pencil", variant: :mini) }
       end
 
       link_to(
-        url_for(resource),
+        resource_path_for(resource, :show),
         data: {
           turbo_method: :delete,
           turbo_confirm: "Are you certain you want to delete this?"
@@ -93,6 +82,10 @@ class View::Resource::Index < ApplicationView
   end
 
   private
+
+  def resource_path_for(resource, action)
+    url_for(controller: resource_plural.underscore, action: action, id: resource.id, only_path: true)
+  end
 
   def index_columns
     @index_columns ||= "#{controller_name.capitalize}Controller::INDEX_COLUMNS".constantize

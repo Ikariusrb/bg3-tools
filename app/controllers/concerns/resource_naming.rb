@@ -12,6 +12,10 @@ module ResourceNaming
             RESOURCE.camelcase.pluralize
           elsif defined?(resource)
             resource.class.name.camelcase.pluralize
+          elsif defined?(resources) && resources.any?
+            resources.first.class.name.camelcase.pluralize
+          elsif defined?(controller_name)
+            controller_name.camelcase.pluralize
           else
             self.class.name.delete_suffix("Controller")
           end

@@ -3,9 +3,11 @@
 class FindEquipment
   ODD_INCLUSIONS = [ "Tough Sunrises", "The Sparky Points", "Shining Staver-of-Skulls", "Dolor Amarus", "BOOOAL's Arms" ].freeze
 
+  # rubocop:disable Style/HashExcept
   def call
-    raw_equip_links.except(*rejects)
+    raw_equip_links.reject { |name, _| rejects.include? name }
   end
+  # rubocop:enable Style/HashExcept
 
   def rejects
     @rejects ||= (raw_equip_links

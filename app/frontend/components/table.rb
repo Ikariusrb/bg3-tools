@@ -10,18 +10,22 @@ class Components::Table < Components::Base
   TR_DEFAULT_CSS = "even:bg-slate-800 odd:bg-slate-600"
   TD_DEFAULT_CSS = "border-b border-slate-400 whitespace-nowrap p-2 text-sm text-gray-350 dark:text-gray-350"
 
-  attr_reader :rows, :columns, :css
+  BORDER_CSS = "border rounded-lg overflow-hidden my-8"
+  NOBORDER_CSS = "my-8"
 
-  def initialize(rows, css: {})
+  attr_reader :rows, :border, :css, :columns
+
+  def initialize(rows, border: true, css: {})
     @rows = rows
-    @columns = []
+    @border = border
     @css = css
+    @columns = []
   end
 
   def view_template(&)
     vanish(&)
 
-    div(class: "border rounded-lg overflow-hidden my-8") do
+    div(class: border ? BORDER_CSS : NOBORDER_CSS) do
       table(class: merged_css(:table)) do
         thead(class: merged_css(:thead)) do
           columns.each do |column|

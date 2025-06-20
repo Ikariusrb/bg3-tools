@@ -44,7 +44,7 @@ gem "phlex-rails", "~> 2.3"
 gem "heroicon", "~> 1.0"
 gem "mechanize", "~> 2.14"
 # merge Tailwind CSS classes in Rails views, upgrade to 1.0 when upgrading to tailwind v4
-gem "tailwind_merge", "< 1.0"
+gem "tailwind_merge", "< 2.0"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

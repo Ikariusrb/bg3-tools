@@ -55,6 +55,6 @@ class View::Resource::Edit < Phlex::HTML
       .reject(&:through_reflection?)
       .select { |assoc| assoc.macro == :has_many }
       .map { |assoc| assoc.name.to_s }
-      .reject { |assoc| resource.class::NO_SUBFORM_RELATIONS.include?(assoc) }
+      .reject { |assoc| Object.const_get("#{resource_plural}Controller::NO_SUBFORM_RELATIONS").include?(assoc) }
   end
 end

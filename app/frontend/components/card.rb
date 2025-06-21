@@ -7,6 +7,8 @@ class Components::Card < Components::Base
   CARD_TITLE_FRAME_DEFAULT_CSS = "px-4 py-5 sm:px-6 dark:bg-slate-850"
   CARD_BODY_DEFAULT_CSS = "px-4 py-5 sm:p-6 dark:bg-slate-800"
 
+  attr_reader :title, :css
+
   def initialize(title:, css: {})
     @title = title
     @css = css

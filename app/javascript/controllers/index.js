@@ -7,8 +7,5 @@ import { application } from "./application"
 import BuildsController from "./builds_controller"
 application.register("builds", BuildsController)
 
-import HelloController from "./hello_controller"
-application.register("hello", HelloController)
-
 import SlimSelectController from "./slim_select_controller"
 application.register("slim-select", SlimSelectController)

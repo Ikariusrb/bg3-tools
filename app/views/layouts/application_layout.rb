@@ -31,6 +31,7 @@ class ApplicationLayout < ApplicationView
         render Components::Nav.new do |nav|
           nav.item(items_path) { "Items" }
           nav.item(builds_path) { "Builds" }
+          nav.item(playthroughs_path) { "Playthroughs" }
         end
         p { yield :message }
         main do

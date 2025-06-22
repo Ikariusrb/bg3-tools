@@ -3,8 +3,10 @@
 module Scrapeable
   extend ActiveSupport::Concern
 
-  included do
-    # Code to run when the module is included in a class
+  included do |base|
+    unless base.const_defined?('UNIQUE_COLUMNS') || base.column_names.include?('name')
+      raise NameError, "either UNIQUE_COLUMNS or a column named 'name' must be defined in #{self.class.name}"
+    end
   end
 
   class_methods do

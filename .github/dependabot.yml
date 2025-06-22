@@ -5,6 +5,10 @@ updates:
   schedule:
     interval: daily
   open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: "tailwind_merge"
+    # Ignore versions of tailwind_merge that are equal to or greater than 1.0.0
+    versions: [ ">=1.0.0" ]
 - package-ecosystem: github-actions
   directory: "/"
   schedule:

@@ -25,9 +25,7 @@ class View::Resource::Edit < Phlex::HTML
         end
 
         subform_relations.each do |sub_resource|
-          sub_resource_viewname = sub_resource.camelcase.pluralize
-          render subform_for(sub_resource_viewname).new(resource: resource, sub_resource: sub_resource)
-          # render View::BuildItems::SubForm.new(resource: resource, sub_resource: nil, id: "foo")
+          render subform_view_for(sub_resource).new(resource: resource, sub_resource: sub_resource)
         end
       end
     end
@@ -42,8 +40,9 @@ class View::Resource::Edit < Phlex::HTML
       end
   end
 
-  def subform_for(sub_resource)
-    if Object.const_defined?("View::#{sub_resource}::SubForm")
+  def subform_view_for(sub_resource)
+    sub_resource_viewname = sub_resource.camelcase.pluralize
+    if Object.const_defined?("View::#{sub_resource_viewname}::SubForm")
       "View::#{sub_resource}::SubForm".constantize
     else
       View::Resource::SubForm

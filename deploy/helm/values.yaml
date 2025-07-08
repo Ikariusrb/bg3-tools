@@ -54,7 +54,7 @@ service:
 
 ingress:
   enabled: true
-  className: nginx
+  className: nginx-internal
   annotations:
     cert-manager.io/cluster-issuer: ca-issuer
   hosts:

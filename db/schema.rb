@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_05_150320) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_21_202834) do
   create_table "build_items", force: :cascade do |t|
     t.integer "build_id", null: false
     t.integer "item_id", null: false
@@ -45,6 +45,25 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_05_150320) do
     t.index ["name"], name: "index_items_on_name", unique: true
   end
 
+  create_table "playthrough_builds", force: :cascade do |t|
+    t.integer "playthrough_id", null: false
+    t.string "companion"
+    t.integer "build_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["build_id"], name: "index_playthrough_builds_on_build_id"
+    t.index ["playthrough_id"], name: "index_playthrough_builds_on_playthrough_id"
+  end
+
+  create_table "playthroughs", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   add_foreign_key "build_items", "builds"
   add_foreign_key "build_items", "items"
+  add_foreign_key "playthrough_builds", "builds"
+  add_foreign_key "playthrough_builds", "playthroughs"
 end

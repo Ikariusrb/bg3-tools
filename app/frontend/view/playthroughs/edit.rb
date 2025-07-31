@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class View::Resource::Edit < Phlex::HTML
+class View::Playthroughs::Edit < Phlex::HTML
   include Phlex::Rails::Helpers::FormFor
   include Phlex::Rails::Helpers::LinkTo
   include Phlex::Rails::Helpers::Routes
@@ -25,7 +25,8 @@ class View::Resource::Edit < Phlex::HTML
         end
 
         subform_relations.each do |sub_resource|
-          render subform_view_for(sub_resource).new(resource: resource, sub_resource: sub_resource)
+          render subform_view_for(sub_resource_viewname).new(resource: resource, sub_resource: sub_resource)
+          # render View::BuildItems::SubForm.new(resource: resource, sub_resource: nil, id: "foo")
         end
       end
     end
@@ -41,8 +42,7 @@ class View::Resource::Edit < Phlex::HTML
   end
 
   def subform_view_for(sub_resource)
-    sub_resource_viewname = sub_resource.camelcase.pluralize
-    if Object.const_defined?("View::#{sub_resource_viewname}::SubForm")
+    if Object.const_defined?("View::#{sub_resource}::SubForm")
       "View::#{sub_resource}::SubForm".constantize
     else
       View::Resource::SubForm

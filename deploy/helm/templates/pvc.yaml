@@ -1,12 +1,12 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: bg3-tools-production-pvc
+  name: bg3-tools-production-storage
 spec:
   accessModes:
   - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
-  storageClassName: local-path
+      storage: 2Gi
+  storageClassName: topolvm-xfs
   volumeMode: Filesystem

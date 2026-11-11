@@ -54,7 +54,7 @@ service:
 
 ingress:
   enabled: true
-  className: nginx
+  className: ingress-internal
   annotations:
     cert-manager.io/cluster-issuer: ca-issuer
   hosts:
@@ -95,7 +95,7 @@ autoscaling:
 volumes:
 - name: rails-storage
   persistentVolumeClaim:
-    claimName: bg3-tools-production-pvc
+    claimName: bg3-tools-production-storage
 # - name: foo
 #   secret:
 #     secretName: mysecret
@@ -106,8 +106,6 @@ volumeMounts:
 - name: rails-storage
   mountPath: /rails/storage
   readOnly: false
-  persistentVolumeClaim:
-    claimName: bg3-tools-production-pvc
 
 nodeSelector: {}
 

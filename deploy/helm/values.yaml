@@ -2,7 +2,6 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-replicaCount: 1
 appName: bg3-tools
 environment: production
 
@@ -38,7 +37,12 @@ serviceAccount:
 podAnnotations: {}
 podLabels: {}
 
-podSecurityContext: {} # fsGroup: 2000
+# Whichever volume holds the SQLite files (the claim below, or Litestream's per-pod volume) is
+# group-owned by the rails group, so the non-root app and Litestream can both write them.
+podSecurityContext:
+  fsGroup: 1000
+  seccompProfile:
+    type: RuntimeDefault
 
 securityContext:
   capabilities:
@@ -84,28 +88,40 @@ readinessProbe:
     path: /up
     port: http
 
-autoscaling:
+# SQLite on a claim pinned to one node (topolvm-xfs). Replaced by litestream below. The claim is
+# kept (resource-policy: keep) when it leaves the chart, so rolling back is flipping the two flags
+# again.
+storage:
   enabled: false
-  minReplicas: 1
-  maxReplicas: 100
-  targetCPUUtilizationPercentage: 80
-  # targetMemoryUtilizationPercentage: 80
+  size: 2Gi
+  storageClassName: topolvm-xfs
 
-  # Additional volumes on the output Deployment definition.
-volumes:
-- name: rails-storage
-  persistentVolumeClaim:
-    claimName: bg3-tools-production-storage
-# - name: foo
-#   secret:
-#     secretName: mysecret
-#     optional: false
+# SQLite on a per-pod volume instead of the claim above: restored from the app-storage bucket on
+# start, and copied back to it continuously, by Litestream. The volume is created with the pod on
+# whichever worker it lands and deleted with it, so the app isn't pinned to a node.
+litestream:
+  enabled: true
+  image: litestream/litestream:0.5.18@sha256:513bff62a88fc0c86c73d27333c41c54c89fe890a7c32a551600adff9309b11b
+  # The app-storage Secret: endpoint, region, forcePathStyle, sqliteBucket and keys. Created by
+  # `bin/ops app:storage:add bg3-tools --sqlite` in jrbhome-infra, so it defaults to s3-<appName>.
+  secretName: ""
+  # Databases copied to the bucket. The rest (cache, queue, cable) start empty on every boot and
+  # the entrypoint's db:prepare rebuilds them: the app has no jobs, so the queue holds nothing.
+  databases:
+  - production.sqlite3
+  volume:
+    storageClassName: topolvm-ephemeral
+    size: 1Gi
+  resources:
+    requests:
+      cpu: 10m
+      memory: 32Mi
+    limits:
+      memory: 256Mi
 
-# Additional volumeMounts on the output Deployment definition.
-volumeMounts:
-- name: rails-storage
-  mountPath: /rails/storage
-  readOnly: false
+# Additional volumes/volumeMounts on the Deployment (beyond storage and litestream).
+volumes: []
+volumeMounts: []
 
 nodeSelector: {}
 

@@ -58,3 +58,51 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Litestream: the app-storage Secret (see litestream in values.yaml). Named after appName, as
+app:storage:add names it, not after the fullname.
+*/}}
+{{- define "..litestreamSecretName" -}}
+{{- .Values.litestream.secretName | default (printf "s3-%s" .Values.appName) -}}
+{{- end -}}
+
+{{/*
+Litestream: environment for the restore and replicate containers, all from the app-storage
+Secret. litestream.yml expands the S3_* variables; Litestream hands the LITESTREAM_* keys to the
+S3 client itself, so they never appear in the config.
+*/}}
+{{- define "..litestreamEnv" -}}
+{{- $secret := include "..litestreamSecretName" . -}}
+{{- range $name, $key := dict "LITESTREAM_ACCESS_KEY_ID" "accessKeyId" "LITESTREAM_SECRET_ACCESS_KEY" "secretAccessKey" "S3_ENDPOINT" "endpoint" "S3_REGION" "region" "S3_FORCE_PATH_STYLE" "forcePathStyle" "S3_BUCKET" "sqliteBucket" }}
+- name: {{ $name }}
+  valueFrom:
+    secretKeyRef:
+      name: {{ $secret }}
+      key: {{ $key }}
+{{- end }}
+{{- end -}}
+
+{{/*
+Litestream: what the restore and replicate containers share. They run as the app's user, so the
+databases they write stay the app's.
+*/}}
+{{- define "..litestreamSecurityContext" -}}
+allowPrivilegeEscalation: false
+capabilities:
+  drop:
+  - ALL
+runAsNonRoot: true
+runAsUser: 1000
+runAsGroup: 1000
+seccompProfile:
+  type: RuntimeDefault
+{{- end -}}
+
+{{- define "..litestreamMounts" -}}
+- name: sqlite
+  mountPath: /rails/storage
+- name: litestream-config
+  mountPath: /etc/litestream
+  readOnly: true
+{{- end -}}

@@ -1,12 +1,18 @@
+{{- if .Values.storage.enabled }}
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: bg3-tools-production-storage
+  name: {{ include "..fullname" . }}-storage
+  annotations:
+    # Helm leaves the claim (and its data) in place when storage.enabled goes false, so the
+    # Litestream cutover can be rolled back. Delete it by hand once Litestream is settled.
+    helm.sh/resource-policy: keep
 spec:
   accessModes:
   - ReadWriteOnce
   resources:
     requests:
-      storage: 2Gi
-  storageClassName: topolvm-xfs
+      storage: {{ .Values.storage.size }}
+  storageClassName: {{ .Values.storage.storageClassName }}
   volumeMode: Filesystem
+{{- end }}

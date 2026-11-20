@@ -1,0 +1,5 @@
+# Settings for bin/ops (build, deploy, console, secrets). Read by ops/lib/deployment/config.rb.
+application: bg3-tools
+registry: registry.jrbhome.net
+namespace: apps-production
+environment: production

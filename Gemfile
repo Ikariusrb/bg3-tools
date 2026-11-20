@@ -67,7 +67,7 @@ end
 
 group :test do
   gem "rspec", "~> 3.13"
-  gem "rspec-rails", "~> 8.0"
+  gem "rspec-rails", "~> 8.1"
   gem "rspec-github", "~> 3.0"
   gem "annotaterb", "~> 4.17"
   gem "shoulda-matchers", '~> 6.0'

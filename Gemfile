@@ -78,3 +78,11 @@ group :development do
   gem "web-console"
 end
 
+# Operational CLI framework — provides the `bin/ops` executable. Tasks live in ops/.
+# Excluded from the production image (BUNDLE_WITHOUT in the Dockerfile).
+group :ops do
+  source "https://rubygems.pkg.github.com/janussecurity" do
+    gem "janus-ops", "~> 0.9"
+  end
+end
+

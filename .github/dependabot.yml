@@ -4,13 +4,32 @@ updates:
   directory: "/"
   schedule:
     interval: daily
+  cooldown:
+    default-days: 7
   open-pull-requests-limit: 10
+  registries:
+  - github-packages-janussecurity
   ignore:
   - dependency-name: "tailwind_merge"
     # Ignore versions of tailwind_merge that are equal to or greater than 1.0.0
     versions: [ ">=1.0.0" ]
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+  cooldown:
+    default-days: 7
+  open-pull-requests-limit: 10
 - package-ecosystem: github-actions
   directory: "/"
   schedule:
     interval: daily
+  cooldown:
+    default-days: 7
   open-pull-requests-limit: 10
+
+registries:
+  github-packages-janussecurity:
+    type: rubygems-server
+    url: https://rubygems.pkg.github.com/janussecurity
+    token: ${{secrets.GH_PRIVATE_GEMS_TOKEN}}

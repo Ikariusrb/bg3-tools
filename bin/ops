@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+#
+# Entry point for the operational CLI (build / deploy / console tasks).
+# Tasks are discovered from ops/tasks/**/*.rb. Run `bin/ops -T` to list them.
+#
+
+ENV["BUNDLE_GEMFILE"] ||= File.expand_path("../Gemfile", __dir__)
+
+require "rubygems"
+require "bundler/setup"
+
+load Gem.bin_path("janus-ops", "ops")

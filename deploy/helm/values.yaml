@@ -71,13 +71,15 @@ ingress:
     hosts:
     - bg3-tools.prd.jrbhome.net
 
+# The memory request is steady use (about 130 MiB, peaking at 170 MiB, 2026-11), so the scheduler
+# and the cluster's failover-capacity alert see what the app really needs.
 resources:
   limits:
     cpu: 1
     memory: 1Gi
   requests:
     cpu: 100m
-    memory: 128Mi
+    memory: 192Mi
 
 livenessProbe:
   httpGet:

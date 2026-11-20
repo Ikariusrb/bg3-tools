@@ -5,17 +5,26 @@ metadata:
   labels:
     {{- include "..labels" . | nindent 4 }}
 spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
-  {{- end }}
+  # SQLite: a single writer only. Never scale beyond one replica, and recreate (don't roll) so
+  # two pods never hold the databases at once: with Litestream, two pods would overwrite each
+  # other's copies in the bucket.
+  replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       {{- include "..selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
+      {{- if or .Values.podAnnotations .Values.litestream.enabled }}
       annotations:
+        {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- if .Values.litestream.enabled }}
+        # Roll the pod when the Litestream config changes.
+        checksum/litestream: {{ include (print $.Template.BasePath "/litestream-configmap.yaml") . | sha256sum }}
+        {{- end }}
       {{- end }}
       labels:
         {{- include "..labels" . | nindent 8 }}
@@ -30,6 +39,43 @@ spec:
       serviceAccountName: {{ include "..serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- if .Values.litestream.enabled }}
+      initContainers:
+        # Rebuilds /rails/storage from the bucket before the app starts. A database with no copy
+        # in the bucket yet is skipped, and db:prepare creates it.
+        - name: litestream-restore
+          image: {{ .Values.litestream.image }}
+          command:
+            - sh
+            - -ec
+            - |
+              for db in {{ join " " .Values.litestream.databases }}; do
+                litestream restore -config /etc/litestream/litestream.yml \
+                  -if-db-not-exists -if-replica-exists -integrity-check quick "/rails/storage/$db"
+              done
+          env:
+            {{- include "..litestreamEnv" . | trim | nindent 12 }}
+          securityContext:
+            {{- include "..litestreamSecurityContext" . | nindent 12 }}
+          resources:
+            {{- toYaml .Values.litestream.resources | nindent 12 }}
+          volumeMounts:
+            {{- include "..litestreamMounts" . | nindent 12 }}
+        # Copies every change to the bucket. A native sidecar: it starts before the app and stops
+        # after it, so a clean shutdown copies the last writes.
+        - name: litestream
+          image: {{ .Values.litestream.image }}
+          restartPolicy: Always
+          args: ["replicate", "-config", "/etc/litestream/litestream.yml"]
+          env:
+            {{- include "..litestreamEnv" . | trim | nindent 12 }}
+          securityContext:
+            {{- include "..litestreamSecurityContext" . | nindent 12 }}
+          resources:
+            {{- toYaml .Values.litestream.resources | nindent 12 }}
+          volumeMounts:
+            {{- include "..litestreamMounts" . | nindent 12 }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -49,7 +95,7 @@ spec:
             {{- range $secret := .Values.env_secrets }}
             - name: {{ $secret.name }}
               valueFrom:
-                secretKeyRef: 
+                secretKeyRef:
                   name: {{ $secret.secret }}
                   key: {{ $secret.secretKey }}
             {{- end }}
@@ -63,13 +109,48 @@ spec:
             {{- toYaml .Values.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          {{- with .Values.volumeMounts }}
+          {{- if or .Values.storage.enabled .Values.litestream.enabled .Values.volumeMounts }}
           volumeMounts:
+            {{- if .Values.litestream.enabled }}
+            - name: sqlite
+              mountPath: /rails/storage
+            {{- end }}
+            {{- if .Values.storage.enabled }}
+            - name: rails-storage
+              mountPath: /rails/storage
+            {{- end }}
+            {{- with .Values.volumeMounts }}
             {{- toYaml . | nindent 12 }}
+            {{- end }}
           {{- end }}
-      {{- with .Values.volumes }}
+      {{- if or .Values.storage.enabled .Values.litestream.enabled .Values.volumes }}
       volumes:
+        {{- if .Values.litestream.enabled }}
+        # Created with the pod on whichever worker it lands, deleted with it.
+        - name: sqlite
+          ephemeral:
+            volumeClaimTemplate:
+              metadata:
+                labels:
+                  {{- include "..selectorLabels" . | nindent 18 }}
+              spec:
+                accessModes: ["ReadWriteOnce"]
+                storageClassName: {{ .Values.litestream.volume.storageClassName }}
+                resources:
+                  requests:
+                    storage: {{ .Values.litestream.volume.size }}
+        - name: litestream-config
+          configMap:
+            name: {{ include "..fullname" . }}-litestream
+        {{- end }}
+        {{- if .Values.storage.enabled }}
+        - name: rails-storage
+          persistentVolumeClaim:
+            claimName: {{ include "..fullname" . }}-storage
+        {{- end }}
+        {{- with .Values.volumes }}
         {{- toYaml . | nindent 8 }}
+        {{- end }}
       {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

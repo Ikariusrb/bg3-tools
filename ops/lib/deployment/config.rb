@@ -38,7 +38,7 @@ module Deployment
     def validate!
       missing = REQUIRED_SETTINGS.select { |key| @settings[key].to_s.empty? }
       raise Error, "#{TOOLS_CONFIG} is missing: #{missing.join(', ')}" if missing.any?
-      raise Error, "Missing values file: #{values_file}"   unless values_file.file?
+      raise Error, "Missing values file: #{values_file}" unless values_file.file?
       raise Error, "Missing secrets-values file: #{secrets_file}" unless secrets_file.file?
 
       self

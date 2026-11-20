@@ -88,11 +88,11 @@ readinessProbe:
     path: /up
     port: http
 
-# SQLite on a claim pinned to one node (topolvm-xfs). Being replaced by litestream below: once
-# Litestream is on, set this false. The claim is kept (resource-policy: keep) when it leaves the
-# chart, so rolling back is flipping the two flags again.
+# SQLite on a claim pinned to one node (topolvm-xfs). Replaced by litestream below. The claim is
+# kept (resource-policy: keep) when it leaves the chart, so rolling back is flipping the two flags
+# again.
 storage:
-  enabled: true
+  enabled: false
   size: 2Gi
   storageClassName: topolvm-xfs
 
@@ -100,7 +100,7 @@ storage:
 # start, and copied back to it continuously, by Litestream. The volume is created with the pod on
 # whichever worker it lands and deleted with it, so the app isn't pinned to a node.
 litestream:
-  enabled: false
+  enabled: true
   image: litestream/litestream:0.5.18@sha256:513bff62a88fc0c86c73d27333c41c54c89fe890a7c32a551600adff9309b11b
   # The app-storage Secret: endpoint, region, forcePathStyle, sqliteBucket and keys. Created by
   # `bin/ops app:storage:add bg3-tools --sqlite` in jrbhome-infra, so it defaults to s3-<appName>.

@@ -27,7 +27,12 @@ module Bg3Tools
     config.autoload_paths << "#{root}/app/views/components"
     config.autoload_paths << "#{root}/app/frontend"
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 8.0
+    config.load_defaults 8.1
+
+    # load_defaults 8.1 sets the Active Storage variant processor to :vips, which needs the
+    # image_processing gem and libvips at boot. This app stores no attachments (no Active
+    # Storage tables), so variants are off; cp2020-campaign-manager does the same.
+    config.active_storage.variant_processor = :disabled
 
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.

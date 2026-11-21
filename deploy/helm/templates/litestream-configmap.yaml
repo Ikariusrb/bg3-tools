@@ -12,6 +12,15 @@ data:
   # One replica per database, each under its own file name in the bucket. ${...} is expanded by
   # Litestream from the containers' environment (see ..litestreamEnv).
   litestream.yml: |
+    # How much history the bucket keeps: see litestream.history in values.yaml.
+    l0-retention: {{ .Values.litestream.history.l0Retention }}
+    levels:
+    {{- range .Values.litestream.history.levels }}
+      - interval: {{ . }}
+    {{- end }}
+    snapshot:
+      interval: {{ .Values.litestream.history.snapshotInterval }}
+      retention: {{ .Values.litestream.history.snapshotRetention }}
     dbs:
     {{- range .Values.litestream.databases }}
       - path: /rails/storage/{{ . }}

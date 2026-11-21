@@ -111,6 +111,16 @@ litestream:
   # the entrypoint's db:prepare rebuilds them: the app has no jobs, so the queue holds nothing.
   databases:
   - production.sqlite3
+  # History kept in the bucket. Every sync (about a second apart while the app writes) stays for
+  # l0Retention; merged files at each level's interval, and the daily snapshots, stay for
+  # snapshotRetention. Litestream applies one cutoff to all merge levels (there's no per-level
+  # retention), so 5-minute restore points last the whole week. Older than that, the NAS's ZFS
+  # snapshots of the bucket are the fallback.
+  history:
+    l0Retention: 4h
+    levels: [5m, 1h]
+    snapshotInterval: 24h
+    snapshotRetention: 168h
   volume:
     storageClassName: topolvm-ephemeral
     size: 1Gi
